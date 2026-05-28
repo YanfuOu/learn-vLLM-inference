@@ -1,0 +1,3 @@
+tokens_per_second=57.02
+total_time=1.7538
+generated_tokens=100

@@ -1,0 +1,26 @@
+[
+  {
+    "config": "A: Default",
+    "max_model_len": 128,
+    "max_num_seqs": 256,
+    "throughput": 350.5337019492741,
+    "avg_latency": 1.4222750186920166,
+    "total_tokens": 500
+  },
+  {
+    "config": "B: Shorter Context",
+    "max_model_len": 64,
+    "max_num_seqs": 256,
+    "throughput": 345.0589503509816,
+    "avg_latency": 1.4124109029769898,
+    "total_tokens": 494
+  },
+  {
+    "config": "C: Limited Concurrency",
+    "max_model_len": 64,
+    "max_num_seqs": 8,
+    "throughput": 221.2641953060995,
+    "avg_latency": 1.5510952472686768,
+    "total_tokens": 500
+  }
+]
