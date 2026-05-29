@@ -1,0 +1,43 @@
+root@67674622059f:/project-files# python3 task_5_api_server.py 
+=================================================================
+Task 5: vLLM OpenAI-Compatible API Server
+=================================================================
+
+Model: HuggingFaceTB/SmolLM-135M
+Server URL: http://localhost:8000
+Prompt: "What is inference in machine learning?"
+-----------------------------------------------------------------
+
+Starting vLLM server (this may take a moment)...
+Command: vllm serve HuggingFaceTB/SmolLM-135M --port 8000
+  Server process started (PID: 1393)
+
+  Waiting for server to be ready...
+  Server is ready!er... (20s)
+
+--- SENDING REQUEST ---
+Endpoint: http://localhost:8000/v1/completions
+
+--- RESPONSE ---
+Model: HuggingFaceTB/SmolLM-135M
+Response: 
+Inference is a component of machine learning that allows an algorithm to make predictions based on data. It is a type of optimization problem in machine learning that involves finding the best parame
+Latency: 1.29s
+Prompt tokens: 7
+Completion tokens: 50
+
+--- API DETAILS ---
+Endpoint: http://localhost:8000/v1/completions
+Format: OpenAI-compatible (drop-in replacement)
+Auth: No API key needed (local server)
+
+=================================================================
+KEY INSIGHT:
+- vLLM serves an OpenAI-compatible API out of the box
+- Any app using the OpenAI SDK works with vLLM - zero code changes
+- This is how you self-host LLMs in production
+- The server stays running for Tasks 6-8
+=================================================================
+
+Task 5 Complete!
+Next: python /project-files/task_6_multi_user_load.py

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Task 7: Tuning vLLM Parameters for Production
+Tuning vLLM Parameters for Production
 Experiment with key vLLM configuration options.
 """
 
@@ -139,9 +139,6 @@ def start_server(model, max_model_len, max_num_seqs, swap_space=2):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     markers_dir = os.path.join(script_dir, "markers")
-    print("=" * 65)
-    print("Task 7: Tuning vLLM Parameters for Production")
-    print("=" * 65)
 
     model_name = "HuggingFaceTB/SmolLM-135M"
     server_url = "http://localhost:8000"
@@ -161,18 +158,18 @@ def main():
         },
         {
             "name": "B: Shorter Context",
-            # TODO 1: Set a shorter context length
-            # Hint: Shorter context = less memory per request
-            "max_model_len": 64,  # TODO: Set to 64
+            # Set a shorter context length
+            # Shorter context = less memory per request
+            "max_model_len": 64,  
             "max_num_seqs": 256,
             "swap_space": 1,
         },
         {
             "name": "C: Limited Concurrency",
             "max_model_len": 64,
-            # TODO 2: Limit concurrent sequences
-            # Hint: Fewer concurrent sequences = less memory pressure
-            "max_num_seqs": 8,  # TODO: Set to 8
+            # Limit concurrent sequences
+            # Fewer concurrent sequences = less memory pressure
+            "max_num_seqs": 8, 
             "swap_space": 1,
         },
     ]
@@ -244,24 +241,6 @@ def main():
     os.makedirs(markers_dir, exist_ok=True)
     with open(os.path.join(markers_dir, "tuning_results.json"), "w") as f:
         json.dump(results, f, indent=2)
-
-    # --- KEY INSIGHT ---
-    print("\n" + "=" * 65)
-    print("KEY INSIGHT:")
-    print("- Lower max_model_len saves memory per request")
-    print("- max_num_seqs controls concurrency vs per-request resources")
-    print("- swap_space extends KV cache to CPU RAM when memory is tight")
-    print("- Always tune based on YOUR workload pattern")
-    print("- Next: Build a monitoring dashboard to track these metrics (Task 8)")
-    print("=" * 65)
-
-    # Create marker
-    with open(os.path.join(markers_dir, "task7_complete.txt"), "w") as f:
-        f.write("TASK_7_COMPLETE\n")
-
-    print("\nTask 7 Complete!")
-    print("Next: python " + os.path.join(script_dir, "task_8_dashboard.py"))
-
 
 if __name__ == "__main__":
     main()

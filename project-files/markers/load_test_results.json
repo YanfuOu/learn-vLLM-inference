@@ -2,33 +2,33 @@
   {
     "users": 1,
     "total_tokens": 50,
-    "total_time": 0.7809817790985107,
-    "throughput": 64.02198020255368,
-    "avg_latency": 0.7809085845947266,
+    "total_time": 0.8149487972259521,
+    "throughput": 61.353547818215915,
+    "avg_latency": 0.8148772716522217,
     "success_rate": 100.0
   },
   {
     "users": 5,
     "total_tokens": 250,
-    "total_time": 1.1039025783538818,
-    "throughput": 226.46925997110648,
-    "avg_latency": 1.0995298385620118,
+    "total_time": 1.1308941841125488,
+    "throughput": 221.06400714774523,
+    "avg_latency": 1.1266397476196288,
     "success_rate": 100.0
   },
   {
     "users": 10,
     "total_tokens": 500,
-    "total_time": 1.4992961883544922,
-    "throughput": 333.4898093409816,
-    "avg_latency": 1.4884409189224244,
+    "total_time": 1.4190013408660889,
+    "throughput": 352.3604845185167,
+    "avg_latency": 1.4131825685501098,
     "success_rate": 100.0
   },
   {
     "users": 20,
     "total_tokens": 997,
-    "total_time": 2.0502796173095703,
-    "throughput": 486.27513612425656,
-    "avg_latency": 2.0419761776924132,
+    "total_time": 2.0438411235809326,
+    "throughput": 487.8069965894394,
+    "avg_latency": 2.032444489002228,
     "success_rate": 100.0
   }
 ]

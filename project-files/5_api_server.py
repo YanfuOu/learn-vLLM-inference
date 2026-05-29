@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Task 5: Launch vLLM as an OpenAI-Compatible API Server
-Serve SmolLM via HTTP and interact using the OpenAI Python client.
-"""
 
 import os
 import sys
@@ -37,9 +33,6 @@ def wait_for_server(url, timeout=120):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     markers_dir = os.path.join(script_dir, "markers")
-    print("=" * 65)
-    print("Task 5: vLLM OpenAI-Compatible API Server")
-    print("=" * 65)
 
     model_name = "HuggingFaceTB/SmolLM-135M"
     server_url = "http://localhost:8000"
@@ -96,15 +89,12 @@ def main():
 
     from openai import OpenAI
 
-    # TODO 1: Configure the OpenAI client to point to the local vLLM server
-    # Hint: Point the client to the local vLLM server URL
-    client = OpenAI(base_url="http://localhost:8000/v1", api_key="not-needed")  # TODO: Set to "http://localhost:8000/v1" and "not-needed"
-
-    # TODO 2: Send a completion request
-    # Hint: Use the model_name variable ("HuggingFaceTB/SmolLM-135M")
+    # Configure the OpenAI client to point to the local vLLM server
+    client = OpenAI(base_url="http://localhost:8000/v1", api_key="not-needed") 
+    # Send a completion request
     start_time = time.time()
     response = client.completions.create(
-        model="HuggingFaceTB/SmolLM-135M",  # TODO: Set to "HuggingFaceTB/SmolLM-135M"
+        model="HuggingFaceTB/SmolLM-135M",  
         prompt=prompt,
         max_tokens=50,
         temperature=0.7,
@@ -130,23 +120,6 @@ def main():
     print(f"Endpoint: {server_url}/v1/completions")
     print(f"Format: OpenAI-compatible (drop-in replacement)")
     print(f"Auth: No API key needed (local server)")
-
-    # --- KEY INSIGHT ---
-    print("\n" + "=" * 65)
-    print("KEY INSIGHT:")
-    print("- vLLM serves an OpenAI-compatible API out of the box")
-    print("- Any app using the OpenAI SDK works with vLLM - zero code changes")
-    print("- This is how you self-host LLMs in production")
-    print("- The server stays running for Tasks 6-8")
-    print("=" * 65)
-
-    # Create marker
-    with open(os.path.join(markers_dir, "task5_complete.txt"), "w") as f:
-        f.write("TASK_5_COMPLETE\n")
-
-    print("\nTask 5 Complete!")
-    print("Next: python " + os.path.join(script_dir, "task_6_multi_user_load.py"))
-
 
 if __name__ == "__main__":
     main()

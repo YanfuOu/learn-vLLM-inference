@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Task 6: Multi-User Throughput Under Load
+Multi-User Throughput Under Load
 Stress-test the vLLM server with concurrent requests.
 """
 
@@ -58,9 +58,6 @@ async def run_load_test(url, model, prompts, num_concurrent):
 def main():
     script_dir = os.path.dirname(os.path.abspath(__file__))
     markers_dir = os.path.join(script_dir, "markers")
-    print("=" * 65)
-    print("Task 6: Multi-User Throughput Under Load")
-    print("=" * 65)
 
     model_name = "HuggingFaceTB/SmolLM-135M"
     server_url = "http://localhost:8000"
@@ -94,9 +91,7 @@ def main():
         "What is transfer learning?",
     ]
 
-    # TODO 1: Create the list of concurrent user counts to test
-    # Hint: Start small and increase to see how throughput scales
-    concurrent_users = [1, 5, 10, 20]  # TODO: Set to [1, 5, 10, 20]
+    concurrent_users = [1, 5, 10, 20] 
 
     print(f"\nLoad test plan: {concurrent_users} concurrent users")
     print(f"Each user sends 1 request with max_tokens=50\n")
@@ -114,9 +109,7 @@ def main():
         total_tokens = sum(r["tokens"] for r in successful)
         avg_latency = sum(r["latency"] for r in successful) / len(successful) if successful else 0
 
-        # TODO 2: Calculate aggregate throughput
-        # Hint: Divide total tokens by total time
-        throughput = total_tokens / total_time  # TODO: Set to total_tokens / total_time
+        throughput = total_tokens / total_time 
 
         results_table.append({
             "users": num_users,
@@ -158,23 +151,6 @@ def main():
     os.makedirs(markers_dir, exist_ok=True)
     with open(os.path.join(markers_dir, "load_test_results.json"), "w") as f:
         json.dump(results_table, f, indent=2)
-
-    # --- KEY INSIGHT ---
-    print("\n" + "=" * 65)
-    print("KEY INSIGHT:")
-    print("- Throughput SCALES with concurrent users")
-    print("- vLLM uses continuous batching - does not wait for batch to fill")
-    print("- PagedAttention allows efficient KV cache sharing across requests")
-    print("- Per-request latency increases but total throughput improves")
-    print("- This is the core value of vLLM: high-throughput multi-user serving")
-    print("=" * 65)
-
-    # Create marker
-    with open("/root/markers/task6_complete.txt", "w") as f:
-        f.write("TASK_6_COMPLETE\n")
-
-    print("\nTask 6 Complete!")
-    print("Next: python /root/code/task_7_tuning.py")
 
 
 if __name__ == "__main__":

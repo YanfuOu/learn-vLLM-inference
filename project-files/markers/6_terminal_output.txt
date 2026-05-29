@@ -1,0 +1,26 @@
+root@67674622059f:/project-files# python3 6_multi_user_load.py 
+
+Server: http://localhost:8000
+Model: HuggingFaceTB/SmolLM-135M
+-----------------------------------------------------------------
+
+Load test plan: [1, 5, 10, 20] concurrent users
+Each user sends 1 request with max_tokens=50
+
+  Testing with 1 concurrent user(s)... done (61.4 tok/s, 0.81s avg latency)
+  Testing with 5 concurrent user(s)... done (221.1 tok/s, 1.13s avg latency)
+  Testing with 10 concurrent user(s)... done (352.4 tok/s, 1.41s avg latency)
+  Testing with 20 concurrent user(s)... done (487.8 tok/s, 2.03s avg latency)
+
+--- LOAD TEST RESULTS ---
+ Users  Total Tokens  Time (s)   Throughput  Avg Latency  Success
+------------------------------------------------------------------
+     1            50     0.83s      60.4 tok/s       0.83s     100%
+     5           250     1.11s     225.9 tok/s       1.10s     100%
+    10           500     1.55s     322.6 tok/s       1.55s     100%
+    20           997     2.10s     476.5 tok/s       2.09s     100%
+
+--- SCALING ANALYSIS ---
+  Baseline (1 user): 61.4 tok/s
+  Peak (20 users): 487.8 tok/s
+  Scaling factor: 8.0x throughput improvement
