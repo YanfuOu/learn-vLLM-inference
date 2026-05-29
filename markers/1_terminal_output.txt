@@ -1,0 +1,101 @@
+root@67674622059f:/project-files# python3 1_hf_baseline.py 
+
+Model: HuggingFaceTB/SmolLM-135M
+Prompt: "Explain what a large language model is in simple terms."
+-----------------------------------------------------------------
+
+Loading model with HuggingFace transformers...
+Loading weights: 100%|█████████████████████████████████████████████████████████████████| 272/272 [00:00<00:00, 4318.92it/s]
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+-------> vocab list
+[('header', 12476), ('ĠSQL', 15142), ('Ġallevi', 31231), ('roit', 17460), ('Ġhect', 17719), ('uct', 11032), ('axial', 39890), ('Ġresponsibility', 4974), ('ozilla', 47280), ('ĠLeo', 22862), ('Ġcompensatory', 48948), ('Ġnewer', 16314), ('Ġblob', 33418), ('Ġhairst', 41948), ('Ġsixth', 15708), ('Ġsorted', 13156), ('bye', 25257), ('rele', 28220), ('ĠUl', 20426), ('Ġapostles', 30239)]
+-------> tokenizer.vocab_size 49152
+Model loaded successfully.
+
+Generating with HuggingFace transformers...
+---> inputs:  {'input_ids': tensor([[36971,   732,   253,  1507,  1789,  1743,   314,   281,  2232,  2656,
+            30]]), 'attention_mask': tensor([[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]])}
+[transformers] Setting `pad_token_id` to `eos_token_id`:0 for open-end generation.
+---> the output is  tensor([[36971,   732,   253,  1507,  1789,  1743,   314,   281,  2232,  2656,
+            30,   198,   198,   712,   216,    34,    30,    33,  1812,   314,
+           253, 13934,  6959,  7716,    47,   198,   198,    49, 13934,  6959,
+          7716,   365, 16421,    61,    25,   314,   253,  1502,   282,  6416,
+          5290,   338,  2859,   253,  1789,   738,   253,  3086,   282,  3372,
+           284,   553,   719,  7018,   411,  1507,  1789,  2859,   365, 16421,
+         16653]])  below is each tet and its encoding
+(encoded: 36971, decoded: Explain)
+(encoded: 732, decoded:  what)
+(encoded: 253, decoded:  a)
+(encoded: 1507, decoded:  large)
+(encoded: 1789, decoded:  language)
+(encoded: 1743, decoded:  model)
+(encoded: 314, decoded:  is)
+(encoded: 281, decoded:  in)
+(encoded: 2232, decoded:  simple)
+(encoded: 2656, decoded:  terms)
+(encoded: 30, decoded: .)
+(encoded: 198, decoded: 
+)
+(encoded: 198, decoded: 
+)
+(encoded: 712, decoded: ##)
+(encoded: 216, decoded:  )
+(encoded: 34, decoded: 2)
+(encoded: 30, decoded: .)
+(encoded: 33, decoded: 1)
+(encoded: 1812, decoded:  What)
+(encoded: 314, decoded:  is)
+(encoded: 253, decoded:  a)
+(encoded: 13934, decoded:  Large)
+(encoded: 6959, decoded:  Language)
+(encoded: 7716, decoded:  Model)
+(encoded: 47, decoded: ?)
+(encoded: 198, decoded: 
+)
+(encoded: 198, decoded: 
+)
+(encoded: 49, decoded: A)
+(encoded: 13934, decoded:  Large)
+(encoded: 6959, decoded:  Language)
+(encoded: 7716, decoded:  Model)
+(encoded: 365, decoded:  ()
+(encoded: 16421, decoded: LL)
+(encoded: 61, decoded: M)
+(encoded: 25, decoded: ))
+(encoded: 314, decoded:  is)
+(encoded: 253, decoded:  a)
+(encoded: 1502, decoded:  type)
+(encoded: 282, decoded:  of)
+(encoded: 6416, decoded:  artificial)
+(encoded: 5290, decoded:  intelligence)
+(encoded: 338, decoded:  that)
+(encoded: 2859, decoded:  models)
+(encoded: 253, decoded:  a)
+(encoded: 1789, decoded:  language)
+(encoded: 738, decoded:  through)
+(encoded: 253, decoded:  a)
+(encoded: 3086, decoded:  series)
+(encoded: 282, decoded:  of)
+(encoded: 3372, decoded:  rules)
+(encoded: 284, decoded:  and)
+(encoded: 553, decoded:  has)
+(encoded: 719, decoded:  been)
+(encoded: 7018, decoded:  trained)
+(encoded: 411, decoded:  by)
+(encoded: 1507, decoded:  large)
+(encoded: 1789, decoded:  language)
+(encoded: 2859, decoded:  models)
+(encoded: 365, decoded:  ()
+(encoded: 16421, decoded: LL)
+(encoded: 16653, decoded: Ms)
+
+--- RESULTS ---
+Generated text: Explain what a large language model is in simple terms.
+
+## 2.1 What is a Large Language Model?
+
+A Large Language Model (LLM) is a type of artificial intelligence that models a language through a series of rules and has been trained by large language models (LLMs...
+
+Generated tokens: 50
+Total time: 1.00 seconds
+Tokens per second: 49.8 tok/s
