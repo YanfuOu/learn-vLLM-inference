@@ -1,52 +1,116 @@
-# 1 HuggingFace Inference Baseline
-Goal: Get the `HuggingFaceTB/SmolLM-135M` model running locally using HuggingFace transformers. </br> 
-This represents out baseline single-request performance. Under load with multiple users, requests would queue up.</br>
-Why `SmolLM-135M`: A tiny 135M parameter model was chosen because my 3 year old Ryzen 7 7840HS laptop doesn't even have a GPU. The following was done as a learning experiment, so feel free for folllowing. Thanks for reading. 
+# vLLM Explained Lab - Assets
 
-1. `docker pull vllm/vllm-openai-cpu:latest-x86_64` from vLLM's website for Intel/AMD x86 CPU only pre-built images. Run `docker run -it -v ./project-files:/project-files  --entrypoint bash   vllm/vllm-openai-cpu:latest-x86_64` to use the container.  
-2. Ensure that `pip show torch` shows `Version: 2.11.0+cpu` and `pip show vllm` shows `Version: 0.21.0+cpu` 
-3. `from transformers import AutoModelForCausalLM, AutoTokenizer` to import the needed libraries to run the model and to tokenize prompts.
-4. `model = AutoModelForCausalLM.from_pretrained("HuggingFaceTB/SmolLM-135M")` loads the pretrained language model, while `tokenizer = AutoTokenizer.from_pretrained(model_name)` loads the tokenizer associated with that model.
+## Lab Overview
 
-Since language models cannot directly understand raw text, the tokenizer converts human-readable text into numerical tokens that the model can process. These tokens represent pieces of text (words, subwords, or characters) according to the model’s vocabulary. I have printed out a couple of vocabs from the model as well as the vocab size. 
+**Scenario:** You are an ML engineer at InferenceIO, building an LLM-as-a-Service platform.
+**Mission:** Use vLLM to go from single-user HuggingFace inference to production-ready serving.
+**Model:** SmolLM-135M (HuggingFaceTB/SmolLM-135M)
 
-5.  `inputs = tokenizer(prompt, return_tensors="pt")`  tokenizes the input
-6. `outputs = model.generate(**inputs, max_new_tokens=100, do_sample=True, temperature=0.7,)` sends the model the tokenized input prompt and generates the output. 
-7. Times and calculates the # of generated tokens, total time, and tokens/sec. 
-Baseline Metrics:
+## Task Summary
+
+| Task  | Script                     | TODOs | Key Skill                            |
+| ----- | -------------------------- | ----- | ------------------------------------ |
+| Setup | verify_environment.py      | 0     | Environment check and model download |
+| 1     | task_1_hf_baseline.py      | 2     | Measure baseline inference speed     |
+| 2     | task_2_vllm_inference.py   | 2     | Compare vLLM vs HuggingFace          |
+| 3     | task_3_kv_cache_problem.py | 2     | Understand KV cache fragmentation    |
+| 4     | task_4_paged_attention.py  | 3     | See PagedAttention efficiency        |
+| 5     | task_5_api_server.py       | 2     | Launch OpenAI-compatible API         |
+| 6     | task_6_multi_user_load.py  | 2     | Load test concurrent users           |
+| 7     | task_7_tuning.py           | 2     | Tune production parameters           |
+| 8     | task_8_dashboard.py        | 3     | Build Gradio monitoring UI           |
+
+## Directory Structure
+
 ```
-tokens_per_second=49.62
-total_time=2.0155
-generated_tokens=100
-```
-Key insights:
-- This is SINGLE-REQUEST performance, so no batching - one request at a time
-- Under load with multiple users, requests would queue up
-
-# 2 vLLM Inference Setup and Comparison
-Goal: Run the exact same model `HuggingFaceTB/SmolLM-135M` but using vLLM inference engine and compare the results. 
-1. `from vllm import LLM, SamplingParams` import the right libraries 
-2. `llm = LLM(model=model_name, max_model_len=128, enforce_eager=True)` initializes the vLLM engine with our model. `max_model_len` represents the max total number of tokens the model is allowed to keep in its context window during inference. The total prompt tokens are calculated:  input `prompt tokens` + `generated tokens` = total tokens
-3. `sampling_params = SamplingParams(temperature=0.7, max_tokens=100)`  This line creates a configuration object that controls how the language model generates text.
-4. `outputs = llm.generate([prompt], sampling_params)` actual answer generation by the LLM 
-5. `generated_text = outputs[0].outputs[0].text` gets the generated text 
-
-Metrics
-```
-Generated tokens: 50
-Total time: 0.82 seconds
-Tokens per second: 61.3 tok/s
-
---- COMPARISON: HuggingFace vs vLLM ---
-Metric                HuggingFace         vLLM
-----------------------------------------------
-Tokens/sec                   49.8         61.3
-Total time                  1.00s        0.82s
-vLLM is 1.2x faster in tokens/sec
+code/
+├── verify_environment.py       # Setup: check env + download model
+├── task_1_hf_baseline.py       # HuggingFace baseline inference
+├── task_2_vllm_inference.py    # vLLM offline inference
+├── task_3_kv_cache_problem.py  # KV cache fragmentation simulation
+├── task_4_paged_attention.py   # PagedAttention comparison
+├── task_5_api_server.py        # vLLM API server
+├── task_6_multi_user_load.py   # Concurrent load testing
+├── task_7_tuning.py            # Parameter tuning
+└── task_8_dashboard.py         # Gradio monitoring dashboard
 ```
 
-Insights: 
-- vLLM optimizes inference even for single requests because it was designed as a high-performance LLM serving engine, where as Transformers is a general-purpose model library
-- vLLM has better KV cache optimizations 
-- vLLM has more efficient memory management through PagedAttention(explained below) 
+## Task Files Reference
 
+### verify_environment.py
+
+- Checks Python venv, packages (vllm, transformers, gradio, aiohttp)
+- Downloads SmolLM-135M model
+- Runs quick test generation
+- Creates marker: `/root/markers/environment_verified.txt`
+
+### task_1_hf_baseline.py
+
+- Loads SmolLM-135M with HuggingFace AutoModelForCausalLM
+- Generates 50 tokens and measures tok/s
+- Saves baseline to `/root/markers/hf_baseline.txt`
+- TODO 1: Load model with from_pretrained()
+- TODO 2: Set max_new_tokens=50
+
+### task_2_vllm_inference.py
+
+- Loads SmolLM-135M with vLLM LLM class
+- Generates 50 tokens and compares with baseline
+- Saves metrics to `/root/markers/vllm_baseline.txt`
+- TODO 1: Initialize LLM engine
+- TODO 2: Set SamplingParams
+
+### task_3_kv_cache_problem.py
+
+- Simulates 5 concurrent requests with different lengths
+- Shows contiguous allocation waste (~80%)
+- TODO 1: Set max_seq_len
+- TODO 2: Calculate waste percentage
+
+### task_4_paged_attention.py
+
+- Simulates same requests with paged allocation
+- Shows utilization improvement (~95%)
+- TODO 1: Set page_size
+- TODO 2: Calculate pages needed
+- TODO 3: Compute utilization
+
+### task_5_api_server.py
+
+- Starts vLLM OpenAI-compatible server on port 8000
+- Sends chat completion via OpenAI client
+- Server stays running for subsequent tasks
+- TODO 1: Configure OpenAI client
+- TODO 2: Send completion request
+
+### task_6_multi_user_load.py
+
+- Sends concurrent requests (1/5/10/20 users)
+- Measures throughput scaling
+- Saves results to `/root/markers/load_test_results.json`
+- TODO 1: Set concurrent user counts
+- TODO 2: Calculate throughput
+
+### task_7_tuning.py
+
+- Tests 3 vLLM configurations (default, shorter context, limited concurrency)
+- Benchmarks each and compares
+- Saves to `/root/markers/tuning_results.json`
+- TODO 1: Set max_model_len
+- TODO 2: Set max_num_seqs
+
+### task_8_dashboard.py
+
+- Builds Gradio dashboard on port 7860
+- Shows HF vs vLLM comparison, load test results, tuning results
+- Live metrics refresh button
+- TODO 1: Create metrics function
+- TODO 2: Build comparison chart data
+- TODO 3: Calculate improvement ratio
+
+## Troubleshooting
+
+- **Model not found:** Run verify_environment.py first
+- **Server already running:** Use `fuser -k 8000/tcp` to stop
+- **Port conflict:** Check `lsof -i :8000` or `lsof -i :7860`
+- **Memory issues:** Reduce max_model_len or max_num_seqs
