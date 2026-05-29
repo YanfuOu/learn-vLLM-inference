@@ -1,0 +1,45 @@
+root@67674622059f:/project-files# python3 7_tuning.py 
+
+Model: HuggingFaceTB/SmolLM-135M
+Benchmark: 10 concurrent requests per config
+-----------------------------------------------------------------
+
+--- CONFIG A: Default ---
+  max_model_len=128, max_num_seqs=256, swap_space=1GB
+  Stopping previous server...
+  Previous server stopped.
+  Starting server with config A: Default...
+  Server ready! Running benchmark...
+  Result: 370.7 tok/s, 1.34s avg latency
+
+--- CONFIG B: Shorter Context ---
+  max_model_len=64, max_num_seqs=256, swap_space=1GB
+  Stopping previous server...
+  Previous server stopped.
+  Starting server with config B: Shorter Context...
+  Server ready! Running benchmark...
+  Result: 339.2 tok/s, 1.47s avg latency
+
+--- CONFIG C: Limited Concurrency ---
+  max_model_len=64, max_num_seqs=8, swap_space=1GB
+  Stopping previous server...
+  Previous server stopped.
+  Starting server with config C: Limited Concurrency...
+  Server ready! Running benchmark...
+  Result: 216.2 tok/s, 1.57s avg latency
+
+--- CONFIGURATION COMPARISON ---
+Config                  max_model_len  max_num_seqs  Throughput   Latency
+------------------------------------------------------------------------
+A: Default                        128           256    370.7 tok/s    1.34s
+B: Shorter Context                 64           256    339.2 tok/s    1.47s
+C: Limited Concurrency             64             8    216.2 tok/s    1.57s
+
+--- KEY PARAMETERS EXPLAINED ---
+  max_model_len:  Maximum context length per request.
+                  Lower = less memory per request.
+  max_num_seqs:   Maximum concurrent sequences in a batch.
+                  Controls concurrency vs per-request resources.
+  swap_space:     CPU swap space (GB) for KV cache overflow.
+                  Extends capacity beyond available RAM.
+root@67674622059f:/project-files# 
