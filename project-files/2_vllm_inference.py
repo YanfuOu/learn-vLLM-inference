@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """
-Task 2: vLLM Offline Inference - See the Difference
 Compare vLLM inference speed against the HuggingFace baseline.
 """
 
@@ -14,14 +13,6 @@ os.environ["TORCHDYNAMO_DISABLE"] = "1"
 
 
 def main():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    markers_dir = os.path.join(script_dir, "markers")
-    baseline_file = os.path.join(markers_dir, "hf_baseline.txt")
-    print("=" * 65)
-    print("Task 2: vLLM Offline Inference - See the Difference")
-    print("=" * 65)
-
-
     from vllm import LLM, SamplingParams
 
     model_name = "HuggingFaceTB/SmolLM-135M"
@@ -34,14 +25,8 @@ def main():
     # --- INITIALIZE vLLM ---
     print("\nInitializing vLLM engine...")
 
-    # TODO 1: Initialize the vLLM engine
-    # Hint: Pass the model name ("HuggingFaceTB/SmolLM-135M") to the LLM constructor
-    # Note: enforce_eager=True skips torch.compile to save memory on CPU
-    llm = LLM(model=model_name, max_model_len=128, enforce_eager=True)  # TODO: Set to "HuggingFaceTB/SmolLM-135M"
-
-    # TODO 2: Create SamplingParams for generation
-    # Hint: Set temperature and max_tokens for text generation
-    sampling_params = SamplingParams(temperature=0.7, max_tokens=100)  # TODO: Set to 0.7 and 50
+    llm = LLM(model=model_name, max_model_len=128, enforce_eager=True) 
+    sampling_params = SamplingParams(temperature=0.7, max_tokens=50) 
 
     print("vLLM engine ready.")
 
@@ -66,8 +51,11 @@ def main():
 
     # --- COMPARISON ---
     print("\n--- COMPARISON: HuggingFace vs vLLM ---")
+    # reads in metrics from the HuggingFace baseline for comparison
     hf_tps = None
     hf_time = None
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    markers_dir = os.path.join(script_dir, "markers")
     baseline_file = os.path.join(markers_dir, "hf_baseline.txt")
     if os.path.exists(baseline_file):
         with open(baseline_file, "r") as f:
@@ -77,7 +65,7 @@ def main():
                     hf_tps = float(value)
                 elif key == "total_time":
                     hf_time = float(value)
-
+    # print out the HuggingFace transformer vs vLLM performance comparison in a nice table format
     if hf_tps:
         print(f"{'Metric':<20} {'HuggingFace':>12} {'vLLM':>12}")
         print("-" * 46)
@@ -88,9 +76,9 @@ def main():
             print(f"\nvLLM is {speedup:.1f}x faster in tokens/sec")
         else:
             print("\nNote: For single requests, results may be similar.")
-            print("The real advantage shows under concurrent load (Task 6).")
+            print("The real advantage shows under concurrent load.")
     else:
-        print("(HuggingFace baseline not found - run Task 1 first)")
+        print("(HuggingFace baseline not found - run script 1_hf_baseline.py first)")
 
     # Save vLLM metrics for later comparison
     os.makedirs(markers_dir, exist_ok=True)
@@ -99,26 +87,8 @@ def main():
         f.write(f"total_time={total_time:.4f}\n")
         f.write(f"generated_tokens={generated_tokens}\n")
 
-    # --- KEY INSIGHT ---
-    print("\n" + "=" * 65)
-    print("KEY INSIGHT:")
-    print("- vLLM optimizes inference even for single requests")
-    print("- The REAL advantage is under concurrent load (Task 6)")
-    print("- vLLM handles batching natively - no manual queue management")
-    print("- Before that, let's understand WHY vLLM is faster (Tasks 3-4)")
-    print("=" * 65)
-
-
-    # Create marker
-    with open(os.path.join(markers_dir, "task2_complete.txt"), "w") as f:
-        f.write("TASK_2_COMPLETE\n")
-
-    print("\nTask 2 Complete!")
-    print("Next: python /root/code/task_3_kv_cache_problem.py")
-
     # Clean up
     del llm
-
 
 if __name__ == "__main__":
     main()
