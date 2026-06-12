@@ -1,0 +1,50 @@
+[
+  {
+    "users": 1,
+    "requests_per_user": 1,
+    "total_requests": 1,
+    "successful_requests": 1,
+    "success_rate": 100.0,
+    "total_tokens": 20,
+    "total_time": 0.17644810676574707,
+    "throughput": 113.34777327224059,
+    "requests_per_second": 5.667388663612029,
+    "avg_latency": 0.1763932704925537
+  },
+  {
+    "users": 5,
+    "requests_per_user": 1,
+    "total_requests": 5,
+    "successful_requests": 5,
+    "success_rate": 100.0,
+    "total_tokens": 82,
+    "total_time": 0.6276741027832031,
+    "throughput": 130.64104387356343,
+    "requests_per_second": 7.965917309363624,
+    "avg_latency": 0.4315223217010498
+  },
+  {
+    "users": 10,
+    "requests_per_user": 1,
+    "total_requests": 10,
+    "successful_requests": 10,
+    "success_rate": 100.0,
+    "total_tokens": 197,
+    "total_time": 1.250262975692749,
+    "throughput": 157.5668509985635,
+    "requests_per_second": 7.9983173095717515,
+    "avg_latency": 0.660755968093872
+  },
+  {
+    "users": 20,
+    "requests_per_user": 1,
+    "total_requests": 20,
+    "successful_requests": 20,
+    "success_rate": 100.0,
+    "total_tokens": 418,
+    "total_time": 2.8883509635925293,
+    "throughput": 144.71925512822438,
+    "requests_per_second": 6.924366274077722,
+    "avg_latency": 1.4625402808189392
+  }
+]

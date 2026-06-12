@@ -1,0 +1,34 @@
+[
+  {
+    "users": 1,
+    "total_tokens": 50,
+    "total_time": 0.3880603313446045,
+    "throughput": 128.84594471883577,
+    "avg_latency": 0.38796448707580566,
+    "success_rate": 100.0
+  },
+  {
+    "users": 5,
+    "total_tokens": 250,
+    "total_time": 0.4282500743865967,
+    "throughput": 583.7710603041625,
+    "avg_latency": 0.427783203125,
+    "success_rate": 100.0
+  },
+  {
+    "users": 10,
+    "total_tokens": 467,
+    "total_time": 0.42254209518432617,
+    "throughput": 1105.215327235692,
+    "avg_latency": 0.3964890956878662,
+    "success_rate": 100.0
+  },
+  {
+    "users": 20,
+    "total_tokens": 1000,
+    "total_time": 0.45589709281921387,
+    "throughput": 2193.477466188955,
+    "avg_latency": 0.45476421117782595,
+    "success_rate": 100.0
+  }
+]
